@@ -1,36 +1,59 @@
 "use client";
+
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
 
-export default function RegisterForm() {
-  const router = useRouter();
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(schema),
-  });
+type FormData = z.infer<typeof schema>;
 
-  const onSubmit = async (data: any) => {
-    const { error } = await supabase.auth.signUp(data);
-    if (error) alert(error.message);
-    else router.push("/auth/login");
+export default function RegisterForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
+
+  const router = useRouter();
+
+  const onSubmit = async (data: FormData) => {
+    const { error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+    });
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Check your email for confirmation link!");
+      router.push("/auth/login");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-      <input type="email" placeholder="Email" {...register("email")} className="border p-2 w-full"/>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <Input placeholder="Email" type="email" {...register("email")} />
       {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-      <input type="password" placeholder="Password" {...register("password")} className="border p-2 w-full"/>
-      {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+      <Input
+        placeholder="Password"
+        type="password"
+        {...register("password")}
+      />
+      {errors.password && (
+        <p className="text-red-500">{errors.password.message}</p>
+      )}
 
-      <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded w-full">Register</button>
+      <Button type="submit" disabled={isSubmitting} className="w-full">
+        {isSubmitting ? "Registering..." : "Register"}
+      </Button>
     </form>
   );
 }
