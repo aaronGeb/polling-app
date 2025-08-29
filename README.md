@@ -33,7 +33,7 @@ A modern, real-time polling application built with **Next.js 15**, **React 19**,
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/aaronGeb/polling-app
 cd polling-app
 ```
 
