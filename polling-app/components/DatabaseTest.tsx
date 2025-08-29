@@ -228,7 +228,7 @@ export default function DatabaseTest() {
           <li>Make sure you have a <code>.env.local</code> file with your Supabase credentials</li>
           <li>Run the database schema setup from <code>database-schema.sql</code></li>
           <li>Add sample data from <code>sample-data.sql</code></li>
-          <li>Check that you're logged in to the app</li>
+          <li>Check that you&apos;re logged in to the app</li>
           <li>Verify your Supabase project is active and accessible</li>
         </ol>
       </div>
