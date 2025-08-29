@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { useAuth } from '../lib/authContext';
 
@@ -32,11 +32,11 @@ export default function DatabaseTest() {
       // Test 2: Supabase Client Connection
       addResult('🔍 Testing Supabase client connection...');
       try {
-        const { data, error } = await supabase.from('polls').select('count', { count: 'exact', head: true });
+        const { error } = await supabase.from('polls').select('count', { count: 'exact', head: true });
         if (error) {
           addResult(`❌ Database connection failed: ${error.message}`);
           if (error.code === 'PGRST116') {
-            addResult('💡 This usually means the database tables don\'t exist yet');
+            addResult('💡 This usually means the database tables don&apos;t exist yet');
           }
         } else {
           addResult('✅ Database connection successful');
@@ -58,21 +58,21 @@ export default function DatabaseTest() {
       // Test 4: Database Tables
       addResult('🔍 Testing database tables...');
       try {
-        const { data: polls, error: pollsError } = await supabase.from('polls').select('*').limit(1);
+        const { error: pollsError } = await supabase.from('polls').select('*').limit(1);
         if (pollsError) {
           addResult(`❌ Polls table error: ${pollsError.message}`);
         } else {
           addResult('✅ Polls table accessible');
         }
 
-        const { data: options, error: optionsError } = await supabase.from('poll_options').select('*').limit(1);
+        const { error: optionsError } = await supabase.from('poll_options').select('*').limit(1);
         if (optionsError) {
           addResult(`❌ Poll options table error: ${optionsError.message}`);
         } else {
           addResult('✅ Poll options table accessible');
         }
 
-        const { data: votes, error: votesError } = await supabase.from('votes').select('*').limit(1);
+        const { error: votesError } = await supabase.from('votes').select('*').limit(1);
         if (votesError) {
           addResult(`❌ Votes table error: ${votesError.message}`);
         } else {

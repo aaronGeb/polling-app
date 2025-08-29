@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { PollWithOptions, PollResult } from '../lib/pollService'
 import { PollService } from '../lib/pollService'
@@ -19,16 +19,18 @@ export default function PollCard({ poll, onVoteUpdate }: PollCardProps) {
   const [showResults, setShowResults] = useState(false)
   const { user } = useAuth()
 
+
+
+  const loadResults = useCallback(async () => {
+    const pollResults = await PollService.getPollResults(poll.id)
+    setResults(pollResults)
+  }, [poll.id])
+
   useEffect(() => {
     if (showResults) {
       loadResults()
     }
-  }, [showResults, poll.id])
-
-  const loadResults = async () => {
-    const pollResults = await PollService.getPollResults(poll.id)
-    setResults(pollResults)
-  }
+  }, [showResults, poll.id, loadResults])
 
   const handleVote = async (optionId: string) => {
     if (!user || isVoting) return

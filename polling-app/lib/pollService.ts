@@ -1,5 +1,5 @@
 import { supabase } from './supabaseClient'
-import { Poll, PollInsert, PollOption, PollOptionInsert, Vote, VoteInsert } from './database.types'
+import { Poll, PollInsert, PollOption, PollOptionInsert, Vote } from './database.types'
 
 export interface PollWithOptions extends Poll {
   options: PollOption[]

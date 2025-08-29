@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { PollWithOptions } from '../lib/pollService'
 import { PollService } from '../lib/pollService'
 import { useAuth } from '../lib/authContext'
@@ -12,13 +12,9 @@ export default function UserProfile() {
   const [error, setError] = useState<string | null>(null)
   const { user } = useAuth()
 
-  useEffect(() => {
-    if (user) {
-      loadUserPolls()
-    }
-  }, [user])
 
-  const loadUserPolls = async () => {
+
+  const loadUserPolls = useCallback(async () => {
     if (!user) return
 
     try {
@@ -32,7 +28,13 @@ export default function UserProfile() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [user])
+
+  useEffect(() => {
+    if (user) {
+      loadUserPolls()
+    }
+  }, [user, loadUserPolls])
 
   const handleVoteUpdate = () => {
     loadUserPolls()

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAuth } from '../../../lib/authContext'
 import { PollService } from '../../../lib/pollService'
@@ -23,13 +23,9 @@ export default function PollDetailPage() {
 
   const pollId = params.id as string
 
-  useEffect(() => {
-    if (pollId) {
-      loadPollDetails()
-    }
-  }, [pollId])
 
-  const loadPollDetails = async () => {
+
+  const loadPollDetails = useCallback(async () => {
     try {
       setIsLoading(true)
       setError(null)
@@ -72,36 +68,15 @@ export default function PollDetailPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [pollId, user])
 
-  const handleVote = async (optionId: string) => {
-    if (!user) {
-      // Redirect to login if not authenticated
-      router.push('/auth/login')
-      return
+  useEffect(() => {
+    if (pollId) {
+      loadPollDetails()
     }
+  }, [pollId, loadPollDetails])
 
-    try {
-      setIsVoting(true)
-      await PollService.vote(pollId, optionId, user.id)
-      
-      // Update local state
-      setUserVote({ id: 'temp', poll_id: pollId, option_id: optionId, user_id: user.id, created_at: new Date().toISOString() })
-      setSelectedOptionId(optionId)
-      
-      // Show thank you message
-      setShowVotingForm(false)
-      setShowThankYou(true)
-      
-      // Reload poll details to get updated results
-      await loadPollDetails()
-    } catch (err) {
-      console.error('Error voting:', err)
-      setError('Failed to submit vote')
-    } finally {
-      setIsVoting(false)
-    }
-  }
+
 
   const handleVoteSubmit = async () => {
     if (!selectedOptionId || !user) return
@@ -461,10 +436,9 @@ export default function PollDetailPage() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {options.map((option) => {
-              const isSelected = userVote?.option_id === option.id
-              const voteCount = getOptionVoteCount(option.id)
-              const percentage = getOptionPercentage(option.id)
-              const totalVotes = Array.from(voteCounts.values()).reduce((sum, count) => sum + count, 0)
+                          const isSelected = userVote?.option_id === option.id
+            const voteCount = getOptionVoteCount(option.id)
+            const percentage = getOptionPercentage(option.id)
 
               return (
                 <div

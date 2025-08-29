@@ -166,7 +166,7 @@ export default function LoginPage() {
               color: '#6b7280',
               margin: '0 0 16px 0'
             }}>
-              Don't have an account?
+              Don&apos;t have an account?
             </p>
             <InteractiveButton href="/auth/register">
               ✨ Create Account
