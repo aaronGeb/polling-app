@@ -238,17 +238,189 @@ Use the **Debug tab** (🔧 icon) in the navigation to:
 
 ### Vercel (Recommended)
 
-1. **Push** your code to GitHub
-2. **Connect** your repository to Vercel
-3. **Add** environment variables in Vercel dashboard
-4. **Deploy** automatically on every push
+Vercel is the perfect platform for deploying Next.js applications with automatic deployments, global CDN, and excellent performance.
 
-### Other Platforms
+#### **Step 1: Prepare Your Repository**
 
-- **Netlify**: Similar to Vercel
-- **Railway**: Full-stack deployment
-- **DigitalOcean**: Custom server setup
-- **AWS**: Enterprise deployment
+1. **Push your code to GitHub**:
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
+
+2. **Ensure your repository is public** (or you have a Vercel Pro account for private repos)
+
+#### **Step 2: Deploy to Vercel**
+
+1. **Go to [vercel.com](https://vercel.com)** and sign in with your GitHub account
+2. **Click "New Project"**
+3. **Import your repository** from the list
+4. **Configure your project**:
+   - **Framework Preset**: Next.js (should auto-detect)
+   - **Root Directory**: `polling-app` (if your Next.js app is in a subdirectory)
+   - **Build Command**: `npm run build` (default)
+   - **Output Directory**: `.next` (default)
+   - **Install Command**: `npm install` (default)
+
+#### **Step 3: Configure Environment Variables**
+
+1. **In the Vercel dashboard**, go to your project settings
+2. **Navigate to "Environment Variables"**
+3. **Add your Supabase credentials**:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+4. **Set deployment scope** to "Production, Preview, Development"
+
+#### **Step 4: Deploy**
+
+1. **Click "Deploy"**
+2. **Wait for build completion** (usually 2-5 minutes)
+3. **Your app will be live** at `https://your-project-name.vercel.app`
+
+#### **Step 5: Custom Domain (Optional)**
+
+1. **Go to "Domains"** in your Vercel project settings
+2. **Add your custom domain** (e.g., `polls.yourdomain.com`)
+3. **Update your Supabase settings**:
+   - Go to Supabase Dashboard → Authentication → Settings
+   - Add your Vercel domain to "Site URL"
+   - Add your custom domain if using one
+
+#### **Step 6: Automatic Deployments**
+
+- **Every push to main branch** triggers automatic deployment
+- **Preview deployments** are created for pull requests
+- **Rollback** to previous versions anytime
+
+### **Vercel-Specific Benefits**
+
+- **⚡ Edge Network**: Global CDN for fast loading worldwide
+- **🔄 Zero-Downtime**: Instant deployments with no interruption
+- **📱 Mobile Optimization**: Automatic mobile performance optimization
+- **🔒 SSL/HTTPS**: Free SSL certificates for all domains
+- **📊 Analytics**: Built-in performance monitoring
+- **🌍 Edge Functions**: Serverless functions at the edge
+
+### **Troubleshooting Vercel Deployment**
+
+#### **Build Errors**
+```bash
+# Common issues and solutions:
+# 1. Node.js version mismatch
+# Solution: Add .nvmrc file to your project root
+echo "18.18.0" > .nvmrc
+
+# 2. Build command fails
+# Solution: Check package.json scripts
+npm run build
+
+# 3. Environment variables missing
+# Solution: Verify in Vercel dashboard
+```
+
+#### **Runtime Errors**
+```bash
+# 1. Check Vercel function logs
+# 2. Verify environment variables
+# 3. Test locally with production build
+npm run build
+npm start
+```
+
+### **Other Deployment Platforms**
+
+#### **Netlify**
+- **Similar to Vercel** with drag-and-drop deployment
+- **Good for static sites** and Next.js apps
+- **Free tier available**
+
+#### **Railway**
+- **Full-stack platform** with database hosting
+- **Good for full applications** with backend needs
+- **Pay-per-use pricing**
+
+#### **DigitalOcean App Platform**
+- **Managed Kubernetes** with simple deployment
+- **Good for complex applications** requiring more control
+- **Starting at $5/month**
+
+#### **AWS Amplify**
+- **Enterprise-grade** deployment platform
+- **Advanced features** like A/B testing
+- **Pay-per-use pricing**
+
+### **Pre-Deployment Checklist**
+
+- [ ] **Environment variables** configured
+- [ ] **Database schema** created in Supabase
+- [ ] **Sample data** loaded (optional)
+- [ ] **Build command** works locally (`npm run build`)
+- [ ] **All dependencies** in `package.json`
+- [ ] **Git repository** up to date
+- [ ] **Supabase project** configured and tested
+
+### **Post-Deployment Steps**
+
+1. **Test your live application**:
+   - Create a new poll
+   - Vote on existing polls
+   - Test user authentication
+   - Verify real-time updates
+
+2. **Monitor performance**:
+   - Check Vercel Analytics
+   - Monitor Supabase usage
+   - Test on different devices
+
+3. **Set up monitoring**:
+   - Enable Vercel Analytics
+   - Set up Supabase monitoring
+   - Configure error tracking
+
+### **Production Considerations**
+
+#### **Performance**
+- **Enable Vercel Analytics** for performance monitoring
+- **Use Next.js Image optimization** for images
+- **Implement proper caching** strategies
+
+#### **Security**
+- **Environment variables** are encrypted in Vercel
+- **HTTPS** is automatically enabled
+- **Row Level Security** in Supabase protects your data
+
+#### **Scalability**
+- **Vercel automatically scales** based on traffic
+- **Supabase handles database scaling** automatically
+- **Edge functions** for global performance
+
+### **Cost Optimization**
+
+#### **Vercel Pricing**
+- **Hobby Plan**: Free (100GB bandwidth/month)
+- **Pro Plan**: $20/month (1TB bandwidth/month)
+- **Enterprise**: Custom pricing
+
+#### **Supabase Pricing**
+- **Free Tier**: 500MB database, 2GB bandwidth
+- **Pro Plan**: $25/month (8GB database, 250GB bandwidth)
+- **Enterprise**: Custom pricing
+
+### **Deployment Best Practices**
+
+1. **Use environment variables** for all sensitive data
+2. **Test locally** before deploying
+3. **Monitor your application** after deployment
+4. **Set up staging environment** for testing
+5. **Use semantic versioning** for releases
+6. **Document deployment process** for team members
+
+---
+
+**🚀 Your polling app is now ready for production deployment on Vercel!**
 
 ## 🔒 Security Features
 

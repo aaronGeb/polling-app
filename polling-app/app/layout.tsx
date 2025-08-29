@@ -1,7 +1,10 @@
 import "./globals.css";
-import { AuthProvider } from "@/lib/authContext";
+import { AuthProvider } from "../lib/authContext";
 
-export const metadata = { title: "Polling App", description: "Auth Demo" };
+export const metadata = {
+  title: "Polling App",
+  description: "Next.js + Supabase Polling App",
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
